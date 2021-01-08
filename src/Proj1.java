@@ -81,10 +81,10 @@ public class Proj1 {
 
    for(int i=0; i<grid.length;i+=1){
 
-      for (int j=0;j<grid[0].length;j+=1){
-            grid[i][j].setDirection(direction(routerRow,routerCol,i,j));
-         }
-       }
+      for (int j=0;j<grid[0].length;j+=1) {
+         grid[i][j].setDirection(direction(routerRow, routerCol, i, j));
+      }
+   }
 
 
    }
@@ -121,8 +121,33 @@ public class Proj1 {
    public static void iterate(Cell[][] current, Cell[][] previous,
                               int routerRow, int routerCol) {
    // TODO: write this method body
+      double dist_curr;
+      double fspl;
+      int atten_rate;
+      int signal_curr;
+
+      for(int i=0; i<grid.length;i++){
+         for (int j=0;j<grid[0].length;j++){
+            if(routerRow!=i && routerCol!=j){
+
+               dist_curr=current[i][j].getDistance();
+               fspl_curr=fspl(dist_curr,5);
+               atten_rate_curr=attenRate(previous,i,j);
+               signal_curr=23-atten_rate-fspl_curr;
+            }
+            else {
+               signal_curr=23;
+            }
+
+         }
+      }
+
+
 
    }
+
+
+}
 
    /** Calculate the signal transmission free space path loss (FSPL).
     *  @param distance the distance from the source to the receiver
@@ -133,7 +158,7 @@ public class Proj1 {
    // TODO: write this method body
       double freespl;
       freespl=20*Math.log10(distance)+20*Math.log10(frequency)+92.45;
-      return freespl;double freespl;
+      return freespl;
 
    }
 
@@ -143,91 +168,115 @@ public class Proj1 {
     *  @param row the row of the current cell
     *  @param col the column of the current cell
     *  @return the new attenuation rate of that cell
+    *
     */
+   public static int wallAttenRate(char wall_type){
+      if(wall_type=="b"){
+         atten_wall==22;
+      }
+      else if(wall_type=="c"){
+         atten_wall=6;
+      }
+      else if(wall_type=="d"){
+         atten_wall=4;
+      }
+      else if(wall_type=="g"){
+         atten_wall=20;
+      }
+      else if(wall_type=="w"){
+         atten_wall=6;
+      }
+      else if(wall_type=="n"){
+         atten_wall=0;
+      }
+   return atten_wall;
+
+   }
    public static int attenRate(Cell[][] prev, int row, int col) {
    // TODO: write this method body
-      String Direc=prev[row][col].getDirection;
-//      int cord_neigh_row,cord_neigh_col;
-//      if( Direc=="N"){
-//         coord_neigh_row=row-1;
-//         coord_neigh_col=col;
-//         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
-//         atten_wall=prev[coord_neigh_row][coord_neigh_col].getSouth();
-//         atten_rate=atten_rate_neigh+atten_wall;
-//
-//         }
-//      else if( Direc=="S"){
-//         cord_neigh_row=row+1;
-//         cord_neigh_col=col;
-//         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
-//         atten_wall=prev[coord_neigh_row][coord_neigh_col].getNorth();
-//         atten_rate=atten_rate_neigh+atten_wall;
-//         }
-//      else if( Direc=="E"){
-//         cord_neigh_row=row;
-//         cord_neigh_col=col+1;
-//         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
-//         atten_wall=prev[coord_neigh_row][coord_neigh_col].getWest();
-//         atten_rate=atten_rate_neigh+atten_wall;
-//         }
-//      else if (Direc=="W"){
-//         cord_neigh_row=row;
-//         cors_neigh_col=col-1;
-//         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
-//         atten_wall=prev[coord_neigh_row][coord_neigh_col].getEast();
-//         atten_rate=atten_rate_neigh+atten_wall;
-//         }
-//      else if (Direc=="NE"){
-//
-//         atten_rate_N= prev[row-1][col].getRate()+prev[coord_neigh_row][coord_neigh_col].getSouth();
-//         atten_rate_E= prev[row][col+1].getRate()+prev[coord_neigh_row][coord_neigh_col].getWest();
-//
-//         if (atten_neigh_N>atten_neigh_E){
-//            atten_rate= atten_rate_N;
-//            }
-//         else if (atten_neigh_N<atten_neigh_E){
-//            atten_rate=atten_rate_E;
-//          }
-//         else {atten_rate=atten_rate_E;}
-//       }
-//      else if(Direc=="NW"){
-//         atten_rate_N= prev[row-1][col].getRate()+prev[coord_neigh_row][coord_neigh_col].getSouth();
-//         atten_rate_W= prev[row][col-1].getRate()+prev[coord_neigh_row][coord_neigh_col].getEast();
-//         if (atten_neigh_N>atten_neigh_W){
-//            atten_rate= atten_rate_N;
-//            }
-//         else if (atten_neigh_N<atten_neigh_W){
-//            atten_rate=atten_rate_W;
-//            }
-//         else {atten_rate=atten_rate_W;}
-//
-//       }
-//     else if (Direc=="SE"){
-//         atten_rate_S= prev[row+1][col].getRate()+prev[coord_neigh_row][coord_neigh_col].getNorth();
-//         atten_rate_E= prev[row][col+1].getRate()+prev[coord_neigh_row][coord_neigh_col].getWest();
-//
-//         if (atten_neigh_S>atten_neigh_E){
-//            atten_rate= atten_rate_S;
-//            }
-//         else if (atten_neigh_S<atten_neigh_E){
-//            atten_rate=atten_rate_E;
-//          }
-//         else {atten_rate=atten_rate_E;}
-//       }
-//   else if(Direc=="SW"){
-//         atten_rate_S= prev[row+1][col].getRate()+prev[coord_neigh_row][coord_neigh_col].getNorth();
-//         atten_rate_W= prev[row][col-1].getRate()+prev[coord_neigh_row][coord_neigh_col].getEast();
-//         if (atten_neigh_S>atten_neigh_W){
-//            atten_rate= atten_rate_S;
-//            }
-//         else if (atten_neigh_S<atten_neigh_W){
-//            atten_rate=atten_rate_W;
-//            }
-//         else {atten_rate=atten_rate_W;}
-//
-//
-//      return atten_rate;
-      return -1;
+      String Direc;
+      Direc = prev[row][col].getDirection;
+      int cord_neigh_row,cord_neigh_col;
+      int atten_wall,atten_rate,atten_rate_neigh;
+
+      if( Direc=="N") {
+         coord_neigh_row=row-1;
+         coord_neigh_col=col;
+         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
+         atten_wall=wallAttenRate([coord_neigh_row][coord_neigh_col].getSouth());
+         atten_rate=atten_rate_neigh+atten_wall;
+
+         }
+      else if( Direc=="S") {
+         cord_neigh_row=row+1;
+         cord_neigh_col=col;
+         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
+         atten_wall=wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getNorth());
+         atten_rate=atten_rate_neigh+atten_wall;
+         }
+      else if( Direc=="E") {
+         cord_neigh_row=row;
+         cord_neigh_col=col+1;
+         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
+         atten_wall=wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getWest());
+         atten_rate=atten_rate_neigh+atten_wall;
+         }
+      else if (Direc=="W") {
+         cord_neigh_row=row;
+         cors_neigh_col=col-1;
+         atten_rate_neigh= prev[coord_neigh_row][coord_neigh_col].getRate();
+         atten_wall=wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getEast());
+         atten_rate=atten_rate_neigh+atten_wall;
+         }
+      else if (Direc=="NE") {
+
+         int atten_rate_N= prev[row - 1][col].getRate()+wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getSouth());
+         int atten_rate_E= prev[row][col + 1].getRate()+wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getWest());
+
+         if (atten_rate_N>atten_rate_E) {
+            atten_rate= atten_rate_N;
+            }
+         else if (atten_rate_N<atten_rate_E) {
+            atten_rate=atten_rate_E;
+          }
+         else atten_rate = atten_rate_E;
+       }
+      else if(Direc=="NW") {
+         int atten_rate_N= prev[row - 1][col].getRate()+wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getSouth());
+         int atten_rate_W= prev[row][col - 1].getRate()+wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getEast());
+         if (atten_rate_N>atten_rate_W) {
+            atten_rate= atten_rate_N;
+            }
+         else if (atten_rate_N<atten_rate_W) {
+            atten_rate=atten_rate_W;
+            }
+         else atten_rate = atten_rate_W;
+
+       }
+     else if (Direc=="SE"){
+         int atten_rate_S= prev[row + 1][col].getRate()+wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getNorth());
+         int atten_rate_E= prev[row][col + 1].getRate()+wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getWest());
+
+         if (atten_rate_S>atten_rate_E) {
+            atten_rate= atten_rate_S;
+            }
+         else if (atten_rate_S<atten_rate_E) {
+            atten_rate=atten_rate_E;
+          }
+         else atten_rate = atten_rate_E;
+       }
+   else if(Direc=="SW") {
+         int atten_rate_S = prev[row + 1][col].getRate() + wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getNorth());
+         int atten_rate_W = prev[row][col - 1].getRate() + wallAttenRate(prev[coord_neigh_row][coord_neigh_col].getEast());
+         if (atten_rate_S > atten_rate_W) {
+            atten_rate = atten_rate_S;
+         } else if (atten_rate_S < atten_rate_W) {
+            atten_rate = atten_rate_W;
+         } else {
+            atten_rate = atten_rate_W;
+         }
+      }
+   return atten_rate;
    }
 
 
@@ -286,10 +335,7 @@ public class Proj1 {
          bool=true;
          for (int i = 0; i < grid1.length; i++) {
             for (int j = 0; j < grid1[0].length; j++) {
-               if (Math.abs(grid1[i][j].getSignal()-grid2[i][j].getSignal())<=epsilon) {
-                  bool=true;
-                  }
-               else {bool=false;}
+               bool= Math.abs(grid1[i][j].getSignal() - grid2[i][j].getSignal()) <= epsilon;
               }
            }
 
