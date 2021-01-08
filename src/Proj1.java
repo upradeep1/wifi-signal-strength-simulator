@@ -125,6 +125,7 @@ public class Proj1 {
       double fspl;
       int atten_rate;
       int signal_curr;
+      String direction_curr;
 
       for(int i=0; i<grid.length;i++){
          for (int j=0;j<grid[0].length;j++){
@@ -138,11 +139,13 @@ public class Proj1 {
             else {
                signal_curr=23;
             }
-
+            direction_curr=current[i][j].getDirection();
          }
       }
 
-
+      PrintWriter writer = new PrintWriter("signal.txt", "UTF-8");
+      writer.println(signal_curr,direction_curr,atten_rate,dist_curr);
+      writer.close();
 
    }
 
